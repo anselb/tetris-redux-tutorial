@@ -28,7 +28,7 @@ class App extends Component {
           <MessagePopup />
         </div>
 
-      <Provider/>
+      </Provider>
     );
   }
 }
