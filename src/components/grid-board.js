@@ -6,6 +6,45 @@ import { moveDown } from '../actions'
 import { shapes } from '../utils'
 
 class GridBoard extends Component {
+  constructor(props) {
+    super(props)
+
+    this.lastUpdateTime = 0
+    this.progressTime = 0
+  }
+
+  componentDidMount() {
+    window.requestAnimationFrame(this.update.bind(this))
+  }
+
+  // update handles game updates
+  update(time) {
+    // if the game is running we want to request a callback at the next animation frame
+    window.requestAnimationFrame(this.update.bind(this))
+
+    // if the the game is over, the callbacks stop by exiting this function
+    if (!this.props.isRunning) {
+      return
+    }
+
+    // if lastUpdateTime not been set, set it to the current time
+    if (!this.lastUpdateTime) {
+      this.lastUpdateTime = time
+    }
+
+    // calculate delta time and progress time
+    const deltaTime = time - this.lastUpdateTime
+    this.progressTime += deltaTime
+
+    // if the progress time is greater than speed move the block down
+    if (this.progressTime > this.props.speed) {
+      this.props.moveDown()
+      this.progressTime = 0
+    }
+
+    // set the last update time
+    this.lastUpdateTime = time
+  }
 
   makeGrid() {
     // deconstruct properties from props
