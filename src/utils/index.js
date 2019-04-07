@@ -93,6 +93,44 @@ export const canMoveTo = (shape, grid, x, y, rotation) => {
   return true
 }
 
+// addBlockToGrid adds current shape to grid array
+export const addBlockToGrid = (shape, grid, x, y, rotation) => {
+  // get the block array
+  const block = shapes[shape][rotation];
+  // copy the grid
+  const newGrid = [...grid];
+  // map the block onto the grid
+  for (let row = 0; row < block.length; row++) {
+    for (let col = 0; col < block[row].length; col++) {
+      // look for the actual block, represented as a 1
+      if (block[row][col]) {
+        // set the grid block to the shape number for coloring
+        newGrid[row + y][col + x] = shape;
+      }
+    }
+  }
+  return newGrid;
+}
+
+// checkRows checks for completed rows and scores points
+export const checkRows = (grid) => {
+  // points increase for each row completed simultaneously
+  // i.e. 40 points for completing one row, 100 points for two rows, etc.
+  const points = [0, 40, 100, 300, 1200]
+  let completedRows = 0
+  for (let row = 0; row < grid.length; row++) {
+    // if an empty cell (0) cannot be indexed in the row, it must be complete
+    if (grid[row].indexOf(0) === -1) {
+      completedRows += 1
+      // remove the row at the bottom
+      grid.splice(row, 1)
+      // add a new empty one at the top
+      grid.unshift(Array(10).fill(0))
+    }
+  }
+  return points[completedRows]
+}
+
 // shapes defines block shapes and their rotations as arrays.
 export const shapes = [
   // none
