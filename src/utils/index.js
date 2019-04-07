@@ -52,6 +52,47 @@ export const defaultState = () => {
   }
 }
 
+// nextRotation returns the next rotation for a shape
+export const nextRotation = (shape, rotation) => {
+  // rotation can't exceed the last index of the the rotations for the given shape
+  return (rotation + 1) % shapes[shape].length
+}
+
+// canMoveTo returns a bool as to whether a shape can move to a given location
+export const canMoveTo = (shape, grid, x, y, rotation) => {
+  const currentShape = shapes[shape][rotation]
+  // loop through all rows and cols of the shape
+  for (let row = 0; row < currentShape.length; row++) {
+    for (let col = 0; col < currentShape[row].length; col++) {
+      // look for a 1 here (or anything other than a 0)
+      if (currentShape[row][col] !== 0) {
+        // x offset on grid
+        const proposedX = col + x
+        // y offset on grid
+        const proposedY = row + y
+        // if the shape is above the grid, go through each current col until row changes
+        if (proposedY < 0) {
+          continue
+        }
+        // identify the row that the shape would move into
+        const possibleRow = grid[proposedY]
+        // does the row exist
+        if (possibleRow) {
+          // check if this column in the row is undefined, if it's off the edges, 0, and empty
+          if (possibleRow[proposedX] === undefined || possibleRow[proposedX] !== 0) {
+            // if undefined or not 0 and it's occupied, we can't move here
+            return false
+          }
+        } else {
+          return false
+        }
+      }
+    }
+  }
+  // all rows and cols have been checked with no problem
+  return true
+}
+
 // shapes defines block shapes and their rotations as arrays.
 export const shapes = [
   // none

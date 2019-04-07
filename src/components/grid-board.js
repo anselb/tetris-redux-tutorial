@@ -36,7 +36,7 @@ class GridBoard extends Component {
                 key={k}
                 square={square}
                 color={color}
-              >{square}</GridSquare>
+               >{square}</GridSquare>
       })
     })
   }
