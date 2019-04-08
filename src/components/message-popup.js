@@ -9,7 +9,7 @@ class MessagePopup extends Component {
     return (
       <div className={`message-popup ${isRunning && !gameOver ? 'hidden' : ''}`}>
         <h1>{ gameOver ? 'Game Over' : 'Paused'}</h1>
-        <p>{ gameOver ? 'Click "Restart" to try again' : 'Click "Play" to resume'}</p>
+        <p>{ gameOver ? 'Click "Restart" to try again' : 'Click "Resume" to resume'}</p>
       </div>
     )
   }
